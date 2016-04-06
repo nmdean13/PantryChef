@@ -1,4 +1,13 @@
 <resources>
-    <string name="app_name">PantryChef</string>
+    <string name="app_name">Pantry Chef</string>
     <string name="action_settings">Settings</string>
+    <string name="action_home">Home</string>
+
+    <string-array name="menu_array">
+        <item>Home</item>
+        <item>Pantry List</item>
+        <item>Favorites</item>
+        <item>Search</item>
+        <item>Sign In</item>
+    </string-array>
 </resources>
