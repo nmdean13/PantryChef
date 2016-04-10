@@ -2,6 +2,8 @@
     <string name="app_name">Pantry Chef</string>
     <string name="action_settings">Settings</string>
     <string name="action_home">Home</string>
+    <string name="new_recipe">Find New Recipe</string>
+    <string name="my_saved_recipes">Find Saved Recipes</string>
 
     <string-array name="menu_array">
         <item>Home</item>
