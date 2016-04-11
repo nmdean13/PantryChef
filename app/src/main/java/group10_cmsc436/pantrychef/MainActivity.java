@@ -1,5 +1,6 @@
 package group10_cmsc436.pantrychef;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    Button b1,b2;
+    Button newRecipe, savedRecipes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,19 +19,20 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Creates buttons with their id's
-        b1 = (Button) findViewById(R.id.button_new_recipe);
-        b2 = (Button) findViewById(R.id.button_saved_recipes);
+        // Creates buttons with their id's
+        newRecipe = (Button) findViewById(R.id.button_new_recipe);
+        savedRecipes = (Button) findViewById(R.id.button_saved_recipes);
 
-        //Button listener new recipe
-        b1.setOnClickListener(new View.OnClickListener() {
+        // Button listener new recipe
+        newRecipe.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                Intent intent = new Intent(getApplicationContext(), NewRecipeActivity.class);
+                startActivity(intent);
             }
         });
 
         //Button listener Saved recipes
-        b2.setOnClickListener(new View.OnClickListener() {
+        savedRecipes.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
             }

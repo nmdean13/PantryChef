@@ -2,9 +2,12 @@
     <string name="app_name">Pantry Chef</string>
     <string name="action_settings">Settings</string>
     <string name="action_home">Home</string>
-    <string name="myIngredients">My Ingredients</string>
-    <string name="ingredientsAdd">Add</string>
-    <string name="findRecipe">Find Recipe!</string>
+    <string name="new_recipe_label">New Recipe</string>
+    <string name="my_ingredients">My Ingredients</string>
+    <string name="ingredients_add">Add</string>
+    <string name="find_recipe">Find Recipe!</string>
+    <string name="new_recipe">New Recipe</string>
+    <string name="my_saved_recipes">My Saved Recipes</string>
 
     <string-array name="menu_array">
         <item>Home</item>
