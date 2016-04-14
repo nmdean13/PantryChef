@@ -61,7 +61,7 @@
         android:background="@color/colorPrimary"
         android:textColor="@color/actionBarText"
         android:layout_alignBottom="@+id/ingredient_text"
-        android:enabled="false"
+        android:enabled="true"
         android:clickable="true" />
 
     <Button
