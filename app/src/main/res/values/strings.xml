@@ -4,6 +4,7 @@
     <string name="action_home">Home</string>
     <string name="new_recipe">Find New Recipe</string>
     <string name="my_saved_recipes">Find Saved Recipes</string>
+    <string name="recipe">Recipe</string>
 
     <string-array name="menu_array">
         <item>Home</item>
