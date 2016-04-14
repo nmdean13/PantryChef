@@ -18,6 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".NewRecipeActivity"
+            android:label="@string/new_recipe_label" >
+        </activity>
     </application>
 
 </manifest>
