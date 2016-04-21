@@ -25,6 +25,7 @@ public class NewRecipeActivity extends AppCompatActivity {
     private Button findRecipe;
     private EditText ingredient;
     private LinearLayout linLayout;
+
     // List of ingredients
     private ArrayList<CheckBox> buttonArray = new ArrayList<CheckBox>();
 
@@ -54,38 +55,11 @@ public class NewRecipeActivity extends AppCompatActivity {
                     linLayout.addView(cb);
                     buttonArray.add(cb);
 
-                    // Sets a long click listener for each check box created. If the check box is
-                    // long pressed, it will be deleted.
-                    cb.setOnLongClickListener(new View.OnLongClickListener() {
-                        @Override
-                        public boolean onLongClick(final View v) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(NewRecipeActivity.this);
-                            builder.setMessage("Delete " + cb.getText().toString() + "?");
+                    OnClickIngredientListener listener = new OnClickIngredientListener(
+                            NewRecipeActivity.this, findRecipe, buttonArray);
 
-                            // Delete ingredient if "Yes" button is pressed.
-                            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    buttonArray.remove(cb);
-                                    ViewGroup parentView = (ViewGroup) v.getParent();
-                                    parentView.removeView(v);
-                                }
-                            });
-
-                            // Close dialog if "No" button is pressed.
-                            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-
-                            AlertDialog alertDialog = builder.create();
-                            alertDialog.show();
-
-                            return true;
-                        }
-                    });
+                    cb.setOnClickListener(listener);
+                    cb.setOnLongClickListener(listener);
                 }
             }
         });
