@@ -18,12 +18,15 @@ public class OnClickIngredientListener implements View.OnClickListener, View.OnL
     Activity activity;
     Button findRecipe;
     ArrayList<CheckBox> buttonArray;
+    ArrayList<String> nameArray;
 
     public OnClickIngredientListener(Activity activity, Button findRecipe,
-                                     ArrayList<CheckBox> buttonArray) {
+                                     ArrayList<CheckBox> buttonArray,
+                                     ArrayList<String> nameArray) {
         this.activity = activity;
         this.findRecipe = findRecipe;
         this.buttonArray = buttonArray;
+        this.nameArray = nameArray;
     }
 
     @Override
@@ -51,6 +54,7 @@ public class OnClickIngredientListener implements View.OnClickListener, View.OnL
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 buttonArray.remove((CheckBox) v);
+                nameArray.remove(((CheckBox) v).getText().toString());
                 ViewGroup parentView = (ViewGroup) v.getParent();
                 parentView.removeView(v);
 
