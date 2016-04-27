@@ -1,16 +1,19 @@
 package group10_cmsc436.pantrychef;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import java.net.URL;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Created by Nick Dean on 4/26/16.
  */
-class RecipeAsyncTask extends AsyncTask<Void, Void, String> {
+class RecipeAsyncTask extends AsyncTask<Void, Context, RecipeItem> {
 
     private Exception exception;
 
@@ -19,7 +22,11 @@ class RecipeAsyncTask extends AsyncTask<Void, Void, String> {
     private String URL = "http://food2fork.com/api/search?key=" + key + "&q=shredded%20chicken";
 
 
-    protected String doInBackground(Void... params) {
+    public RecipeAsyncTask(Context c){
+
+    }
+
+    protected RecipeItem doInBackground(Void... params) {
         String data = "";
         // Do some validation here
         HttpURLConnection urlConnection;
@@ -46,15 +53,52 @@ class RecipeAsyncTask extends AsyncTask<Void, Void, String> {
             Log.e("ERROR", e.getMessage(), e);
             return null;
         }
-
-        return data;
+        RecipeItem newR = null;
+        return newR;
     }
 
-    protected void onPostExecute(String response) {
-        if(response == null) {
-            response = "THERE WAS AN ERROR";
-        }
-        Log.i("INFO", response);
+    protected void onPostExecute(RecipeItem result) {
+        if(result == null) {
+            //TODO: Display toast of no found recipes
 
+
+            Log.i("INFO", "No Recipe Found");
+        } else {
+            //TODO: Populate recipe view
+
+
+        }
+
+
+    }
+
+    private String getRecipeInfoFromURL(String query){
+
+        //TODO: Get the specific recipe information from the query
+
+        return null;
+    }
+
+    private String getRecipesFromURL(String query){
+
+        //TODO: Get the recipes that work with the ingredients
+
+        return null;
+    }
+
+    private static String generateIngredientQuery(ArrayList<String> ingredients){
+        String query = "";
+
+        //TODO: Generate query to find recipes based on ingredients
+
+        return query;
+    }
+
+    private static String generateRecipeQuery(int id){
+        String query = "";
+
+        //TODO: Generate query to get information for the specified recipe id
+
+        return query;
     }
 }
