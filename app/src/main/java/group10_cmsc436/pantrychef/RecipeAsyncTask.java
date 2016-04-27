@@ -18,8 +18,9 @@ class RecipeAsyncTask extends AsyncTask<Void, Context, RecipeItem> {
     private Exception exception;
 
     private String email = "twhtie_6@msn.com";
-    private String key = "5d2d82f5596e20218a43ae496842ca72";
-    private String URL = "http://food2fork.com/api/search?key=" + key + "&q=shredded%20chicken";
+    private String k = "5d2d82f5596e20218a43ae496842ca72";
+    private String searchUrl = "http://food2fork.com/api/search?key=" + k;
+    private String requestUrl = "http://food2fork.com/api/get?key=" + k;
 
 
     public RecipeAsyncTask(Context c){
@@ -32,7 +33,7 @@ class RecipeAsyncTask extends AsyncTask<Void, Context, RecipeItem> {
         HttpURLConnection urlConnection;
 
         try {
-            java.net.URL url = new URL(URL);
+            java.net.URL url = new URL(requestUrl);
             urlConnection = (HttpURLConnection) url.openConnection();
 
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
@@ -68,8 +69,6 @@ class RecipeAsyncTask extends AsyncTask<Void, Context, RecipeItem> {
 
 
         }
-
-
     }
 
     private String getRecipeInfoFromURL(String query){
@@ -86,19 +85,35 @@ class RecipeAsyncTask extends AsyncTask<Void, Context, RecipeItem> {
         return null;
     }
 
-    private static String generateIngredientQuery(ArrayList<String> ingredients){
-        String query = "";
+    //Creates a URL to query the database based off the ingredients
+    private String generateIngredientQuery(ArrayList<String> ingredients){
+        String query = searchUrl;
 
-        //TODO: Generate query to find recipes based on ingredients
+        //Adds query opperator
+        query += "&q=";
+
+        //Adds each ingredient to the query separated by a comma
+        for (String temp : ingredients){
+            query += temp + ",";
+        }
+
+        //Removes the comma at the very end
+        query = query.replace(query.substring(query.length()-1), "");
+
+        //Replaces all spaces with the ascii space "%20"
+        query = query.replaceAll(" ", "%20");
+
+        Log.i("QueryToFindRecipes", query);
 
         return query;
     }
 
-    private static String generateRecipeQuery(int id){
-        String query = "";
+    //Creates a URL to query the database for a specified recipe
+    private String generateRecipeQuery(int id){
+        String query = requestUrl;
 
-        //TODO: Generate query to get information for the specified recipe id
-
+        query += "&rId=" + id;
+        
         return query;
     }
 }
