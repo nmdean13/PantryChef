@@ -67,7 +67,6 @@ class RecipeAsyncTask extends AsyncTask<Void, Context, RecipeItem> {
         } else {
             //TODO: Populate recipe view
 
-
         }
     }
 
@@ -80,7 +79,7 @@ class RecipeAsyncTask extends AsyncTask<Void, Context, RecipeItem> {
 
     private String getRecipesFromURL(String query){
 
-        //TODO: Get the recipes that work with the ingredients
+        
 
         return null;
     }
@@ -113,7 +112,8 @@ class RecipeAsyncTask extends AsyncTask<Void, Context, RecipeItem> {
         String query = requestUrl;
 
         query += "&rId=" + id;
-        
+
+        Log.i("FindSpecificRecipe", query);
         return query;
     }
 }
