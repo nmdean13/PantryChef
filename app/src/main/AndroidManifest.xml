@@ -22,6 +22,10 @@
             android:name=".NewRecipeActivity"
             android:label="@string/new_recipe_label" >
         </activity>
+        <activity
+            android:name=".RecipeResultsActivity"
+            android:label="Recipe Results">
+        </activity>
     </application>
 
 </manifest>
