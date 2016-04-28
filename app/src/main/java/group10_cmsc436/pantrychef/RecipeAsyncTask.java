@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Nick Dean on 4/26/16.
@@ -77,11 +78,34 @@ class RecipeAsyncTask extends AsyncTask<Void, Context, RecipeItem> {
         return null;
     }
 
-    private String getRecipesFromURL(String query){
+    private HashMap<String, String> getRecipesFromURL(String line){
 
-        
+        HashMap<String, String> id_and_name = new HashMap<String, String>();
+        char[] char_array = line.toCharArray();
 
-        return null;
+        String key = "";
+        String val = "";
+
+        for (int i = 0; i < char_array.length-5; i++) {
+            if (line.substring(i, i + 5).equals("http:/")) {
+                key = line.substring(i + 26, i + 30);
+            }
+            if (line.substring(i, i + 4).equals("title")) {
+                int j;
+                for (j = i + 9; j < char_array.length; j++) {
+                    if (char_array[j] == '"') {
+                        break;
+                    }
+                    val = line.substring(i + 9, j);
+                }
+            }
+            if (!key.equals("") && !val.equals("")) {
+                id_and_name.put(key, val);
+                key = "";
+                val = "";
+            }
+        }
+        return id_and_name;
     }
 
     //Creates a URL to query the database based off the ingredients
