@@ -3,6 +3,7 @@ package group10_cmsc436.pantrychef;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,25 +20,35 @@ public class OnClickIngredientListener implements View.OnClickListener, View.OnL
     Button findRecipe;
     ArrayList<CheckBox> buttonArray;
     ArrayList<String> nameArray;
+    ArrayList<String> checkedIngredients;
 
     public OnClickIngredientListener(Activity activity, Button findRecipe,
                                      ArrayList<CheckBox> buttonArray,
-                                     ArrayList<String> nameArray) {
+                                     ArrayList<String> nameArray,
+                                     ArrayList<String> checkedIngredients) {
         this.activity = activity;
         this.findRecipe = findRecipe;
         this.buttonArray = buttonArray;
         this.nameArray = nameArray;
+        this.checkedIngredients = checkedIngredients;
     }
 
     @Override
     public void onClick(View v) {
+        String ingredient = ((CheckBox) v).getText().toString();
+
         // Enable button and change color to red if a check box is checked.
-        if (((CheckBox) v).isChecked() && !findRecipe.isEnabled()) {
-            findRecipe.setEnabled(true);
-            findRecipe.setBackgroundColor(activity.getResources().getColor(R.color.colorPrimary));
+        if (((CheckBox) v).isChecked()) {
+            checkedIngredients.add(ingredient);
+
+            if (!findRecipe.isEnabled()) {
+                findRecipe.setEnabled(true);
+                findRecipe.setBackgroundColor(activity.getResources().getColor(R.color.colorPrimary));
+            }
         } else {
-            // Check if any check boxes are checked, and disable the
-            // "Find Recipe" button if none are.
+            checkedIngredients.remove(ingredient);
+
+            // Check if any check boxes are checked, and disable the "Find Recipe" button if none are.
             if (!checkedBoxes()) {
                 disableButton();
             }
@@ -53,8 +64,11 @@ public class OnClickIngredientListener implements View.OnClickListener, View.OnL
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                String ingredient = ((CheckBox) v).getText().toString();
+
                 buttonArray.remove((CheckBox) v);
-                nameArray.remove(((CheckBox) v).getText().toString());
+                nameArray.remove(ingredient);
+                checkedIngredients.remove(ingredient);
                 ViewGroup parentView = (ViewGroup) v.getParent();
                 parentView.removeView(v);
 
