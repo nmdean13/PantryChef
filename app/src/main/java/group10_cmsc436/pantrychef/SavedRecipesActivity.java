@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,12 +19,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 
-public class SavedRecipesActivity extends ListActivity {
+public class SavedRecipesActivity extends AppCompatActivity {
 
     private static final String FILE_NAME = "SavedRecipes.txt";
+    private RadioGroup radioGroup;
+    private ArrayList<RadioButton> radioButtons;
     private Button selectRecipe;
+    private int numRecipes;
 
     RecipeListAdapter mAdapter;
 
@@ -32,11 +38,9 @@ public class SavedRecipesActivity extends ListActivity {
         setContentView(R.layout.activity_saved_recipes);
 
         selectRecipe = (Button) findViewById(R.id.select_recipe_button);
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 
-        //TODO: Allow mAdapter to add recipes
-        getListView().setAdapter(mAdapter);
 
-        //TODO: Make select button open recipe
         selectRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,21 +52,21 @@ public class SavedRecipesActivity extends ListActivity {
     @Override
     public void onResume() {
         super.onResume();
+        numRecipes = loadItems(numRecipes);
 
-        if (mAdapter.getCount() == 0)
-            loadItems();
+        if(numRecipes == 0) {
+            //TODO: No saved recipes message
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        saveItems();
-
     }
 
     //Load saved recipes
-    private void loadItems() {
+    private int loadItems(int numRecipes) {
         BufferedReader reader = null;
         try {
             FileInputStream fis = openFileInput(FILE_NAME);
@@ -71,7 +75,12 @@ public class SavedRecipesActivity extends ListActivity {
             String name;
 
             while (null != (name = reader.readLine())) {
-                mAdapter.add(new RecipeItem(name));
+                RadioButton rButton = new RadioButton(this);
+                rButton.setText(name);
+                rButton.setId(numRecipes + 1);
+                radioButtons.add(rButton);
+                radioGroup.addView(rButton);
+                numRecipes++;
             }
 
         } catch (Exception e) {
@@ -85,6 +94,7 @@ public class SavedRecipesActivity extends ListActivity {
                 }
             }
         }
+        return numRecipes;
     }
 
     // Save Recipes
