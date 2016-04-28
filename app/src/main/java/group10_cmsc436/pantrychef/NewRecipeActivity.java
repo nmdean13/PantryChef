@@ -2,6 +2,7 @@ package group10_cmsc436.pantrychef;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,12 +18,14 @@ import android.widget.LinearLayout;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Pramath on 4/11/2016.
@@ -72,6 +75,25 @@ public class NewRecipeActivity extends AppCompatActivity {
                 Log.d("Tag", "Calling method listener");
                 makeCheckBox(ingredient.getText().toString());
                 ingredient.setText("");
+            }
+        });
+
+        findRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecipeAsyncTask task = new RecipeAsyncTask(getApplicationContext());
+                String url = task.generateIngredientQuery(nameArray);
+                task.execute(url);
+                try {
+                    task.get(5000, TimeUnit.MILLISECONDS);
+                } catch (Exception e) {
+                    Log.d("ERROR:", e.getMessage());
+                }
+
+                ArrayList<String> recipeNames = task.getRecipeNamesFromJSON();
+                Intent intent = new Intent(NewRecipeActivity.this, RecipeResultsActivity.class);
+                intent.putStringArrayListExtra("recipe_list", recipeNames);
+                startActivity(intent);
             }
         });
     }

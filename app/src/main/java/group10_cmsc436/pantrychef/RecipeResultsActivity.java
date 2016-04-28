@@ -18,7 +18,7 @@ public class RecipeResultsActivity extends AppCompatActivity {
     private RadioGroup radioGroup;
     private RadioButton[] radioButtons;
     private Button selectRecipe;
-    private String[] recipes;
+    private ArrayList<String> recipes;
     RecipeListAdapter mAdapter;
 
     @Override
@@ -30,14 +30,15 @@ public class RecipeResultsActivity extends AppCompatActivity {
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 
         Intent intent = getIntent();
-        recipes = intent.getStringArrayExtra("recipe_list");
+        recipes = intent.getStringArrayListExtra("recipe_list");
 
+        int numRecipes = recipes.size();
 
-        radioButtons = new RadioButton[recipes.length];
+        radioButtons = new RadioButton[numRecipes];
 
-        for (int i = 0; i < recipes.length; i++) {
+        for (int i = 0; i < recipes.size(); i++) {
                 radioButtons[i] = new RadioButton(this);
-                radioButtons[i].setText(recipes[i]);
+                radioButtons[i].setText(recipes.get(i));
                 radioButtons[i].setId(i);
                 radioGroup.addView(radioButtons[i]);
         }
@@ -46,7 +47,9 @@ public class RecipeResultsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String selected = (String) radioButtons[radioGroup.getCheckedRadioButtonId()].getText();
-
+                Intent selectIntent = new Intent(RecipeResultsActivity.this, ViewRecipeActivity.class);
+                selectIntent.putExtra("recipe_name", selected);
+                startActivity(selectIntent);
             }
         });
     }
