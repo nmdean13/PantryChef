@@ -91,9 +91,16 @@ public class NewRecipeActivity extends AppCompatActivity {
                 }
 
                 ArrayList<String> recipeNames = task.getRecipeNamesFromJSON();
-                Intent intent = new Intent(NewRecipeActivity.this, RecipeResultsActivity.class);
-                intent.putStringArrayListExtra("recipe_list", recipeNames);
-                startActivity(intent);
+                ArrayList<String> recipeIDs = task.getRecipeIDsFromJSON();
+
+                if(recipeNames.size() == 0) {
+                    Toast.makeText(NewRecipeActivity.this, "No recipes to show", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(NewRecipeActivity.this, RecipeResultsActivity.class);
+                    intent.putStringArrayListExtra("name_list", recipeNames);
+                    intent.putStringArrayListExtra("id_list", recipeIDs);
+                    startActivity(intent);
+                }
             }
         });
     }

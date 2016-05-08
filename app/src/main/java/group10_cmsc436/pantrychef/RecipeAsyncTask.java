@@ -44,6 +44,7 @@ class RecipeAsyncTask extends AsyncTask<String, Context, ArrayList<String>> {
             bufferedReader.close();
             urlConnection.disconnect();
             jsonObject = new JSONObject(jsonString);
+            Log.i("doInBackground", jsonString);
         } catch(Exception e) {
             Log.e("ERROR", e.getMessage(), e);
             return null;
@@ -125,7 +126,7 @@ class RecipeAsyncTask extends AsyncTask<String, Context, ArrayList<String>> {
     }
 
     //Creates a URL to query the database for a specified recipe
-    private String generateRecipeQuery(int id){
+    protected String generateRecipeQuery(String id){
         String query = requestUrl;
 
         query += "&rId=" + id;
@@ -149,5 +150,34 @@ class RecipeAsyncTask extends AsyncTask<String, Context, ArrayList<String>> {
             Log.e("ERROR", e.getMessage());
         }
         return recipeNames;
+    }
+
+    protected ArrayList<String> getRecipeIDsFromJSON() {
+        ArrayList<String> recipeIDs = new ArrayList<String>();
+        try {
+            JSONArray recipesArray = jsonObject.getJSONArray("recipes");
+
+            for(int i=0;i < recipesArray.length();i++){
+                JSONObject recipeObj = (JSONObject) recipesArray.get(i);
+                recipeIDs.add(recipeObj.getString("recipe_id"));
+            }
+
+        } catch (Exception e) {
+            Log.e("ERROR", e.getMessage());
+        }
+        return recipeIDs;
+    }
+
+    protected String getImageURL() {
+        String url = new String();
+        try {
+            JSONObject recipeObj = jsonObject.getJSONObject("recipe");
+            url = recipeObj.getString("image_url");
+
+        } catch (Exception e) {
+            Log.e("ERROR", e.getMessage());
+        }
+
+        return url;
     }
 }
