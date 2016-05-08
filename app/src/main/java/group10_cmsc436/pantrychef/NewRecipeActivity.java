@@ -2,6 +2,7 @@ package group10_cmsc436.pantrychef;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,9 +18,14 @@ import android.widget.LinearLayout;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Pramath on 4/11/2016.
@@ -35,7 +41,6 @@ public class NewRecipeActivity extends AppCompatActivity {
     // List of ingredients
     private ArrayList<CheckBox> buttonArray;
     private ArrayList<String> nameArray;
-    private ArrayList<String> checkedIngredients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +53,6 @@ public class NewRecipeActivity extends AppCompatActivity {
         linLayout = (LinearLayout) findViewById(R.id.ingredient_lin_layout);
         buttonArray = new ArrayList<CheckBox>();
         nameArray = new ArrayList<String>();
-        checkedIngredients = new ArrayList<String>();
 
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
 
@@ -58,26 +62,45 @@ public class NewRecipeActivity extends AppCompatActivity {
             String name = sharedPreferences.getString("ingredient_" + i, "");
             boolean checked = sharedPreferences.getBoolean("checked_" + i, false);
 
+            Log.d("Tag", "Calling method prefs");
             restoreCheckBox(name, checked);
         }
 
-        // Sets listener for "Add" button
+        // Creates a check box for the ingredient and adds it to buttonArray.
+        // TODO: Give check boxes a border so they can be seen against white background
+        // TODO: Make the check boxes bigger so that they're proportionate to the text size
         addIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("Tag", "Calling method listener");
                 makeCheckBox(ingredient.getText().toString());
                 ingredient.setText("");
             }
         });
 
-        // Sets listener for "Find Recipe" button
         findRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                for (String s : checkedIngredients) {
-//                    Log.d("tag", s);
-//                }
-                new RecipeAsyncTask(getApplicationContext(), checkedIngredients).execute();
+                RecipeAsyncTask task = new RecipeAsyncTask(getApplicationContext());
+                String url = task.generateIngredientQuery(nameArray);
+                task.execute(url);
+                try {
+                    task.get(5000, TimeUnit.MILLISECONDS);
+                } catch (Exception e) {
+                    Log.d("ERROR:", e.getMessage());
+                }
+
+                ArrayList<String> recipeNames = task.getRecipeNamesFromJSON();
+                ArrayList<String> recipeIDs = task.getRecipeIDsFromJSON();
+
+                if(recipeNames.size() == 0) {
+                    Toast.makeText(NewRecipeActivity.this, "No recipes to show", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(NewRecipeActivity.this, RecipeResultsActivity.class);
+                    intent.putStringArrayListExtra("name_list", recipeNames);
+                    intent.putStringArrayListExtra("id_list", recipeIDs);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -107,7 +130,6 @@ public class NewRecipeActivity extends AppCompatActivity {
     public void onBackPressed() {
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
 
         editor.putInt("size", buttonArray.size());
 
@@ -127,37 +149,23 @@ public class NewRecipeActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    // Restores the check boxes via SharedPreferences when the activity is brought back up
     private void restoreCheckBox(String ingredientString, boolean checked) {
         CheckBox cb = new CheckBox(getApplicationContext());
         cb.setText(ingredientString);
         cb.setTextColor(Color.BLACK);
         cb.setTextSize(25.0f);
         cb.setChecked(checked);
-
         linLayout.addView(cb);
         buttonArray.add(cb);
         nameArray.add(ingredientString);
 
-        if (checked) {
-            checkedIngredients.add(ingredientString);
-
-            if (!findRecipe.isEnabled()) {
-                findRecipe.setEnabled(true);
-                findRecipe.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            }
-        }
-
         OnClickIngredientListener listener = new OnClickIngredientListener(
-                NewRecipeActivity.this, findRecipe, buttonArray, nameArray, checkedIngredients);
+                NewRecipeActivity.this, findRecipe, buttonArray, nameArray);
 
         cb.setOnClickListener(listener);
         cb.setOnLongClickListener(listener);
     }
 
-    // Creates a check box for the ingredient and adds it to buttonArray.
-    // TODO: Give check boxes a border so they can be seen against white background
-    // TODO: Make the check boxes bigger so that they're proportional to the text size
     private void makeCheckBox(String ingredientString) {
         if (!ingredientString.isEmpty()) {
             if (nameArray.contains(ingredientString)) {
@@ -188,8 +196,7 @@ public class NewRecipeActivity extends AppCompatActivity {
                     buttonArray.add(cb);
 
                     OnClickIngredientListener listener = new OnClickIngredientListener(
-                            NewRecipeActivity.this, findRecipe, buttonArray,
-                            nameArray, checkedIngredients);
+                            NewRecipeActivity.this, findRecipe, buttonArray, nameArray);
 
                     cb.setOnClickListener(listener);
                     cb.setOnLongClickListener(listener);

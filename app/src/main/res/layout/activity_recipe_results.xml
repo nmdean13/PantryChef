@@ -43,6 +43,7 @@
         android:layout_centerHorizontal="true"
         android:textColor="@color/actionBarText"
         android:background="@color/inactiveButton"
+        android:enabled="false"
         android:textSize="20sp"
         android:padding="10dp" />
 </RelativeLayout>

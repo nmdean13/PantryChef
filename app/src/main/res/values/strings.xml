@@ -13,6 +13,7 @@
     <string name="select_recipe">Select Recipe!</string>
     <string name="recipe">Recipe</string>
     <string name="recipes_found">Recipes Found</string>
+    <string name="save_recipe">Save Recipe</string>
     <string-array name="menu_array">
         <item>Home</item>
         <item>Pantry List</item>

@@ -15,11 +15,11 @@ import java.util.ArrayList;
 
 public class RecipeResultsActivity extends AppCompatActivity {
 
-    private RadioGroup radioGroup;
-    private RadioButton[] radioButtons;
-    private Button selectRecipe;
-    private ArrayList<String> recipes;
-    RecipeListAdapter mAdapter;
+    RadioGroup radioGroup;
+    RadioButton[] radioButtons;
+    Button selectRecipe;
+    ArrayList<String> recipes;
+    ArrayList<String> ids;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -30,7 +30,8 @@ public class RecipeResultsActivity extends AppCompatActivity {
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 
         Intent intent = getIntent();
-        recipes = intent.getStringArrayListExtra("recipe_list");
+        recipes = intent.getStringArrayListExtra("name_list");
+        ids = intent.getStringArrayListExtra("id_list");
 
         int numRecipes = recipes.size();
 
@@ -43,12 +44,21 @@ public class RecipeResultsActivity extends AppCompatActivity {
                 radioGroup.addView(radioButtons[i]);
         }
 
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                selectRecipe.setEnabled(true);
+                selectRecipe.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            }
+        });
+
         selectRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String selected = (String) radioButtons[radioGroup.getCheckedRadioButtonId()].getText();
                 Intent selectIntent = new Intent(RecipeResultsActivity.this, ViewRecipeActivity.class);
                 selectIntent.putExtra("recipe_name", selected);
+                selectIntent.putExtra("recipe_id", ids.get(recipes.indexOf(selected)));
                 startActivity(selectIntent);
             }
         });
