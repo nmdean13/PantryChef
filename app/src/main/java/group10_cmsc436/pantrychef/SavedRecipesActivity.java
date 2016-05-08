@@ -1,26 +1,22 @@
 package group10_cmsc436.pantrychef;
 
-import android.app.ListActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class SavedRecipesActivity extends AppCompatActivity {
 
@@ -55,7 +51,8 @@ public class SavedRecipesActivity extends AppCompatActivity {
         numRecipes = loadItems(numRecipes);
 
         if(numRecipes == 0) {
-            //TODO: No saved recipes message
+            Toast.makeText(getApplicationContext(), "No Saved Recipes.",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -38,7 +38,7 @@
     </ScrollView>
 
     <EditText
-        android:layout_width="275dp"
+        android:layout_width="275dp"/>/
         android:layout_height="60dp"
         android:hint="Add New Ingredient..."
         android:textSize="25dp"

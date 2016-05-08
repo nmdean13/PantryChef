@@ -1,15 +1,12 @@
 package group10_cmsc436.pantrychef;
 
-import android.app.ActionBar;
 import android.app.TabActivity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -51,7 +48,6 @@ public class ViewRecipeActivity extends TabActivity {
 
         TabHost.TabSpec descriptionTab = tabHost.newTabSpec("Description");
         TabHost.TabSpec ingredientsTab = tabHost.newTabSpec("Ingredients");
-        TabHost.TabSpec directionsTab = tabHost.newTabSpec("Directions");
 
 
         descriptionTab.setIndicator("Description");
@@ -62,14 +58,19 @@ public class ViewRecipeActivity extends TabActivity {
         ingredientsTab.setIndicator("Ingredients");
         ingredientsTab.setContent(R.id.ingredients);
 
-        directionsTab.setIndicator("Directions");
-        directionsTab.setContent(R.id.directions);
 
         tabHost.addTab(descriptionTab);
         tabHost.addTab(ingredientsTab);
-        tabHost.addTab(directionsTab);
 
 
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_recipe_view, menu);
+        return true;
     }
 
     public void setUpDescriptionTab() {

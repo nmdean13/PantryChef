@@ -113,20 +113,6 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/scrollView2" />
                     </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/directions"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <ScrollView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/scrollView3" >
-
-                        </ScrollView>
-                    </LinearLayout>
                 </FrameLayout>
             </LinearLayout>
         </TabHost>

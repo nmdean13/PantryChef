@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="group10_cmsc436.pantrychef.MainActivity">
+
+    <item
+        android:icon="@drawable/menu"
+        android:id="@+id/action_save_recipe"
+        android:orderInCategory="100"
+        android:title="@string/save_recipe"
+        app:showAsAction="never" />
+
+</menu>
