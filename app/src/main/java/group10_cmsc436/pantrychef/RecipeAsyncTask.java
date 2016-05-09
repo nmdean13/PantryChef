@@ -53,7 +53,7 @@ class RecipeAsyncTask extends AsyncTask<String, Context, ArrayList<String>> {
         return new ArrayList<String>();
     }
 
-    protected void onPostExecute(RecipeItem result) {
+    protected void onPostExecute(ArrayList<String> result) {
         if(result == null) {
             //TODO: Display toast of no found recipes
 

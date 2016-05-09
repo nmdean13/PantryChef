@@ -12,13 +12,24 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.concurrent.TimeUnit;
 
 
 public class ViewRecipeActivity extends TabActivity {
 
+    static String FILENAME = "SavedRecipes.txt";
     TabHost tabHost;
     String name;
     String id;
@@ -86,7 +97,19 @@ public class ViewRecipeActivity extends TabActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: save recipe
+                try {
+                    String line = name + "||" + id;
+                    if (!alreadySaved(line)) {
+                        FileOutputStream fos = openFileOutput(FILENAME, MODE_PRIVATE | MODE_APPEND);
+                        fos.write((line+"\n").getBytes());
+                        fos.close();
+                        Toast.makeText(ViewRecipeActivity.this, "Recipe saved!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ViewRecipeActivity.this, "Recipe is already saved.", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    Log.e("Error", e.getMessage());
+                }
             }
         });
     }
@@ -114,5 +137,25 @@ public class ViewRecipeActivity extends TabActivity {
         protected void onPostExecute(Bitmap result) {
             mImage.setImageBitmap(result);
         }
+    }
+
+    protected boolean alreadySaved(String toBeSaved) {
+        try {
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+
+            String line;
+            while (null != (line = reader.readLine())) {
+                if(line.equals(toBeSaved)) {
+                    return true;
+                }
+            }
+
+            return false;
+        } catch(Exception e) {
+            Log.e("Error", e.getMessage());
+            return false;
+        }
+
     }
 }

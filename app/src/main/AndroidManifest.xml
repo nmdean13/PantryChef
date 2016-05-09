@@ -30,6 +30,10 @@
             android:name=".ViewRecipeActivity"
             android:label="View Recipe">
         </activity>
+        <activity
+            android:name=".SavedRecipesActivity"
+            android:label="Saved Recipes">
+        </activity>
     </application>
 
 </manifest>

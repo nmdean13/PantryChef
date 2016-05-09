@@ -34,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
         //Button listener Saved recipes
         savedRecipes.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                Intent intent = new Intent(getApplicationContext(), SavedRecipesActivity.class);
+                startActivity(intent);
             }
         });
 

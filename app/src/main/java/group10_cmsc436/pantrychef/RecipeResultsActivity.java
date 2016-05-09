@@ -1,11 +1,12 @@
 package group10_cmsc436.pantrychef;
 
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -63,7 +64,6 @@ public class RecipeResultsActivity extends AppCompatActivity {
             }
         });
     }
-
 
     @Override
     public void onResume() {
