@@ -113,10 +113,26 @@ public class SavedRecipesActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_delete_all) {
-            if(!deleteFile(FILENAME)) {
-                Log.d("Delete", "deleteFile returned false");
-            }
-           reset();
+            AlertDialog.Builder builder = new AlertDialog.Builder(SavedRecipesActivity.this);
+            builder.setMessage("Delete all recipes?");
+
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                        deleteFile(FILENAME);
+                        reset();
+                }
+            });
+
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         }
         return true;
     }
@@ -146,6 +162,7 @@ public class SavedRecipesActivity extends AppCompatActivity {
                 radioButtons.add(new RadioButton(this));
                 radioButtons.get(i).setText(recipes.get(i));
                 radioButtons.get(i).setId(i);
+                radioButtons.get(i).setTextSize(20);
                 radioGroup.addView(radioButtons.get(i));
             }
         }

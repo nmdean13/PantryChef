@@ -180,4 +180,18 @@ class RecipeAsyncTask extends AsyncTask<String, Context, ArrayList<String>> {
 
         return url;
     }
+
+    protected ArrayList<String> getIngredientsFromJSON() {
+        ArrayList<String> ingredients = new ArrayList<String>();
+        try {
+            JSONObject recipeObj = jsonObject.getJSONObject("recipe");
+            JSONArray ingredientsArray = recipeObj.getJSONArray("ingredients");
+            for(int i=0;i < ingredientsArray.length();i++){
+                ingredients.add((String) ingredientsArray.get(i));
+            }
+        } catch (Exception e) {
+            Log.e("ERROR", e.getMessage());
+        }
+        return ingredients;
+    }
 }

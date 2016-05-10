@@ -5,6 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.style.BulletSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -24,6 +27,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 
@@ -68,6 +72,7 @@ public class ViewRecipeActivity extends TabActivity {
 
         ingredientsTab.setIndicator("Ingredients");
         ingredientsTab.setContent(R.id.ingredients);
+        setUpIngredientsTab();
 
 
         tabHost.addTab(descriptionTab);
@@ -157,5 +162,15 @@ public class ViewRecipeActivity extends TabActivity {
             return false;
         }
 
+    }
+
+    public void setUpIngredientsTab() {
+        ArrayList<String> ingredients = task.getIngredientsFromJSON();
+
+        TextView ingredientsView = (TextView) findViewById(R.id.ingredients_text);
+
+        for(int i = 0; i < ingredients.size(); i++) {
+            ingredientsView.append("\u2022 " + ingredients.get(i) + "\n");
+        }
     }
 }
