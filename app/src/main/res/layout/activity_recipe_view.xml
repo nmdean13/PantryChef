@@ -85,7 +85,7 @@
                                     android:id="@+id/desc_string"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:text="Description of recipe"
+                                    android:text="Go To Recipe"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
                                     android:textColor="@color/colorPrimaryDark" />
 

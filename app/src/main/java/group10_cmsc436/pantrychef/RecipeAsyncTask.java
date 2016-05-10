@@ -181,6 +181,19 @@ class RecipeAsyncTask extends AsyncTask<String, Context, ArrayList<String>> {
         return url;
     }
 
+    protected String getRecipeURL() {
+        String url = new String();
+        try {
+            JSONObject recipeObj = jsonObject.getJSONObject("recipe");
+            url = recipeObj.getString("source_url");
+
+        } catch (Exception e) {
+            Log.e("ERROR", e.getMessage());
+        }
+
+        return url;
+    }
+
     protected ArrayList<String> getIngredientsFromJSON() {
         ArrayList<String> ingredients = new ArrayList<String>();
         try {

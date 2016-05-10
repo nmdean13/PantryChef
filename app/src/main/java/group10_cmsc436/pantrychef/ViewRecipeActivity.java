@@ -1,13 +1,12 @@
 package group10_cmsc436.pantrychef;
 
 import android.app.TabActivity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.TextUtils;
-import android.text.style.BulletSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -18,26 +17,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 
-public class ViewRecipeActivity extends TabActivity {
+public class ViewRecipeActivity extends TabActivity implements View.OnClickListener {
 
     static String FILENAME = "SavedRecipes.txt";
     TabHost tabHost;
     String name;
     String id;
+    String source_link;
     RecipeAsyncTask task;
+    TextView link;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +74,9 @@ public class ViewRecipeActivity extends TabActivity {
 
         tabHost.addTab(descriptionTab);
         tabHost.addTab(ingredientsTab);
-
+        link = (TextView)findViewById(R.id.desc_string);
+        source_link = task.getRecipeURL();
+        link.setOnClickListener(this);
 
 
     }
@@ -117,6 +116,12 @@ public class ViewRecipeActivity extends TabActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(source_link));
+        startActivity(browserIntent);
     }
 
     private class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
