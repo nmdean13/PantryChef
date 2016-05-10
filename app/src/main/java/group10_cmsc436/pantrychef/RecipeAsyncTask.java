@@ -141,9 +141,24 @@ class RecipeAsyncTask extends AsyncTask<String, Context, ArrayList<String>> {
         try {
             JSONArray recipesArray = jsonObject.getJSONArray("recipes");
 
-            for(int i=0;i < recipesArray.length();i++){
+            for(int i=0;i < recipesArray.length();i++) {
                 JSONObject recipeObj = (JSONObject) recipesArray.get(i);
-                recipeNames.add(recipeObj.getString("title"));
+                String s = recipeObj.getString("title");
+                if (s.contains("&amp;")) {
+                    char[] fixed_string = new char[s.length()-4];
+                    int buffer = 0;
+                    for (int j = 0; j < s.length(); j++) {
+                        if (s.charAt(j) == '&' && s.charAt(j+1) == 'a') {
+                            j += 5;
+                            buffer = -4;
+                            fixed_string[j - 6] = ' ';
+                            fixed_string[j-5] = '&';
+                        }
+                        fixed_string[j+buffer] = s.charAt(j);
+                    }
+                    s = new String(fixed_string);
+                }
+                recipeNames.add(s);
             }
 
         } catch (Exception e) {
