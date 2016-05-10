@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -49,6 +50,8 @@ class RecipeAsyncTask extends AsyncTask<String, Context, ArrayList<String>> {
             Log.e("ERROR", e.getMessage(), e);
             return null;
         }
+
+        Log.i("query", jsonObject.toString());
 
         return new ArrayList<String>();
     }
@@ -143,7 +146,17 @@ class RecipeAsyncTask extends AsyncTask<String, Context, ArrayList<String>> {
 
             for(int i=0;i < recipesArray.length();i++){
                 JSONObject recipeObj = (JSONObject) recipesArray.get(i);
-                recipeNames.add(recipeObj.getString("title"));
+                String name = recipeObj.getString("title");
+                String[] words = name.split("\\s | -");
+                String new_name = "";
+                for (int j = 0; j < words.length; j++) {
+                    String output = words[j].substring(0, 1).toUpperCase() + words[j].substring(1);
+                    new_name += output;
+                    if (j < words.length - 1) {
+                        new_name += " ";
+                    }
+                }
+                recipeNames.add(new_name);
             }
 
         } catch (Exception e) {
@@ -179,6 +192,32 @@ class RecipeAsyncTask extends AsyncTask<String, Context, ArrayList<String>> {
         }
 
         return url;
+    }
+
+    protected String getRecipeURL() {
+        String urlString = new String();
+        try {
+            JSONObject recipeObj = jsonObject.getJSONObject("recipe");
+            urlString = recipeObj.getString("source_url");
+        } catch (Exception e) {
+            Log.e("ERROR", e.getMessage());
+        }
+
+        return urlString;
+    }
+
+    protected String getSocialRank() {
+        Double rank = 0.0;
+        try {
+            JSONObject recipeObj = jsonObject.getJSONObject("recipe");
+            rank = Double.parseDouble(recipeObj.getString("social_rank"));
+        } catch (Exception e) {
+            Log.e("ERROR", e.getMessage());
+        }
+
+        DecimalFormat formatter = new DecimalFormat("#0.00");
+
+        return String.valueOf(formatter.format(rank));
     }
 
     protected ArrayList<String> getIngredientsFromJSON() {

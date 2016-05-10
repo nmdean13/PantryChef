@@ -36,11 +36,11 @@ public class RecipeResultsActivity extends AppCompatActivity {
         radioButtons = new RadioButton[numRecipes];
 
         for (int i = 0; i < recipes.size(); i++) {
-                radioButtons[i] = new RadioButton(this);
-                radioButtons[i].setText(recipes.get(i));
-                radioButtons[i].setId(i);
-                radioButtons[i].setTextSize(20);
-                radioGroup.addView(radioButtons[i]);
+            radioButtons[i] = new RadioButton(this);
+            radioButtons[i].setText(recipes.get(i));
+            radioButtons[i].setId(i);
+            radioButtons[i].setTextSize(20);
+            radioGroup.addView(radioButtons[i]);
         }
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -58,6 +58,7 @@ public class RecipeResultsActivity extends AppCompatActivity {
                 Intent selectIntent = new Intent(RecipeResultsActivity.this, ViewRecipeActivity.class);
                 selectIntent.putExtra("recipe_name", selected);
                 selectIntent.putExtra("recipe_id", ids.get(recipes.indexOf(selected)));
+                selectIntent.putExtra("save_button", true);
                 startActivity(selectIntent);
             }
         });

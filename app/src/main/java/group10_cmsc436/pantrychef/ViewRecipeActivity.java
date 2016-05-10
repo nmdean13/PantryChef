@@ -5,9 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.text.style.BulletSpan;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -27,6 +31,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -38,6 +44,7 @@ public class ViewRecipeActivity extends TabActivity {
     String name;
     String id;
     RecipeAsyncTask task;
+    Button saveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +52,16 @@ public class ViewRecipeActivity extends TabActivity {
         setContentView(R.layout.activity_recipe_view);
         tabHost = getTabHost();
         tabHost.setup();
+        saveButton = (Button) findViewById(R.id.save);
 
         name = getIntent().getStringExtra("recipe_name");
         id = getIntent().getStringExtra("recipe_id");
+
+        boolean showButton = getIntent().getBooleanExtra("save_button", true);
+
+        if (!showButton) {
+            saveButton.setVisibility(View.GONE);
+        }
 
         task = new RecipeAsyncTask(getApplicationContext());
         String url = task.generateRecipeQuery(id);
@@ -61,11 +75,11 @@ public class ViewRecipeActivity extends TabActivity {
         TextView recipeName = (TextView) findViewById(R.id.recipe_name);
         recipeName.setText(name);
 
-        TabHost.TabSpec descriptionTab = tabHost.newTabSpec("Description");
+        TabHost.TabSpec descriptionTab = tabHost.newTabSpec("Overview");
         TabHost.TabSpec ingredientsTab = tabHost.newTabSpec("Ingredients");
 
 
-        descriptionTab.setIndicator("Description");
+        descriptionTab.setIndicator("Overview");
         descriptionTab.setContent(R.id.description);
         setUpDescriptionTab();
 
@@ -95,10 +109,17 @@ public class ViewRecipeActivity extends TabActivity {
         new ImageDownloader((ImageView) findViewById(R.id.image))
                 .execute(imgURL);
 
-        //TODO: fetch description
-        TextView description = (TextView) findViewById(R.id.desc_string);
+        TextView socialRank = (TextView) findViewById(R.id.social_rank);
+        socialRank.append(" " + task.getSocialRank());
+        String url = getResources().getString(R.string.get_directions);
 
-        Button saveButton = (Button) findViewById(R.id.save);
+        TextView description = (TextView) findViewById(R.id.desc_string);
+        String recipeUrl = "<a href='" + task.getRecipeURL() + "'> " + url + " </a>";
+
+        description.setMovementMethod(LinkMovementMethod.getInstance());
+        description.setText(Html.fromHtml(recipeUrl));
+
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,9 +127,10 @@ public class ViewRecipeActivity extends TabActivity {
                     String line = name + "||" + id;
                     if (!alreadySaved(line)) {
                         FileOutputStream fos = openFileOutput(FILENAME, MODE_PRIVATE | MODE_APPEND);
-                        fos.write((line+"\n").getBytes());
+                        fos.write((line + "\n").getBytes());
                         fos.close();
                         Toast.makeText(ViewRecipeActivity.this, "Recipe saved!", Toast.LENGTH_SHORT).show();
+                        saveButton.setVisibility(View.GONE);
                     } else {
                         Toast.makeText(ViewRecipeActivity.this, "Recipe is already saved.", Toast.LENGTH_SHORT).show();
                     }
