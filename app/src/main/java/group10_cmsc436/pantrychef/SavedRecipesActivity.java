@@ -59,6 +59,7 @@ public class SavedRecipesActivity extends AppCompatActivity {
                 Intent selectIntent = new Intent(SavedRecipesActivity.this, ViewRecipeActivity.class);
                 selectIntent.putExtra("recipe_name", selected);
                 selectIntent.putExtra("recipe_id", ids.get(recipes.indexOf(selected)));
+                selectIntent.putExtra("save_button", false);
                 startActivity(selectIntent);
             }
         });
@@ -119,8 +120,8 @@ public class SavedRecipesActivity extends AppCompatActivity {
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                        deleteFile(FILENAME);
-                        reset();
+                    deleteFile(FILENAME);
+                    reset();
                 }
             });
 
