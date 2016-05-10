@@ -11,6 +11,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -194,6 +196,20 @@ class RecipeAsyncTask extends AsyncTask<String, Context, ArrayList<String>> {
         }
 
         return url;
+    }
+
+    protected String getRank() {
+        Double rank = 0.0;
+        try {
+            JSONObject recipeObj = jsonObject.getJSONObject("recipe");
+            rank = Double.parseDouble(recipeObj.getString("social_rank"));
+        } catch (Exception e) {
+            Log.e("ERROR", e.getMessage());
+        }
+
+        NumberFormat formatter = new DecimalFormat("#0.00");
+
+        return String.valueOf(formatter.format(rank));
     }
 
     protected String getRecipeURL() {

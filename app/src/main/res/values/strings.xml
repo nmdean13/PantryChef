@@ -15,8 +15,8 @@
     <string name="recipes_found">Recipes Found</string>
     <string name="save_recipe">Save Recipe</string>
     <string name="delete_recipe">Delete</string>
-    <string name="get_directions">Click to get directions!</string>
-    <string name="social_rank">Social rank:</string>
+    <string name="get_directions">Go To Recipe</string>
+    <string name="social_rank">Social Rank:</string>
     <string-array name="menu_array">
         <item>Home</item>
         <item>Pantry List</item>

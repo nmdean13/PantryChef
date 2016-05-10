@@ -55,14 +55,17 @@ public class ViewRecipeActivity extends TabActivity implements View.OnClickListe
             Log.e("ERROR:", e.getMessage());
         }
 
+        TextView socialRank = (TextView) findViewById(R.id.social_rank);
+        socialRank.append(" " + task.getRank());
+
         TextView recipeName = (TextView) findViewById(R.id.recipe_name);
         recipeName.setText(name);
 
-        TabHost.TabSpec descriptionTab = tabHost.newTabSpec("Description");
+        TabHost.TabSpec descriptionTab = tabHost.newTabSpec("Overview");
         TabHost.TabSpec ingredientsTab = tabHost.newTabSpec("Ingredients");
 
 
-        descriptionTab.setIndicator("Description");
+        descriptionTab.setIndicator("Overview");
         descriptionTab.setContent(R.id.description);
         setUpDescriptionTab();
 
@@ -77,7 +80,6 @@ public class ViewRecipeActivity extends TabActivity implements View.OnClickListe
         link = (TextView)findViewById(R.id.desc_string);
         source_link = task.getRecipeURL();
         link.setOnClickListener(this);
-
 
     }
 
@@ -98,6 +100,11 @@ public class ViewRecipeActivity extends TabActivity implements View.OnClickListe
         TextView description = (TextView) findViewById(R.id.desc_string);
 
         Button saveButton = (Button) findViewById(R.id.save);
+
+        if(!getIntent().getBooleanExtra("save_button", true)) {
+            saveButton.setVisibility(View.GONE);
+        }
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,9 +112,10 @@ public class ViewRecipeActivity extends TabActivity implements View.OnClickListe
                     String line = name + "||" + id;
                     if (!alreadySaved(line)) {
                         FileOutputStream fos = openFileOutput(FILENAME, MODE_PRIVATE | MODE_APPEND);
-                        fos.write((line+"\n").getBytes());
+                        fos.write((line + "\n").getBytes());
                         fos.close();
                         Toast.makeText(ViewRecipeActivity.this, "Recipe saved!", Toast.LENGTH_SHORT).show();
+                        ((Button) findViewById(R.id.save)).setVisibility(View.GONE);
                     } else {
                         Toast.makeText(ViewRecipeActivity.this, "Recipe is already saved.", Toast.LENGTH_SHORT).show();
                     }
