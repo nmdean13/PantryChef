@@ -62,7 +62,8 @@
         android:enabled="true"
         android:layout_below="@+id/textView"
         android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/ingredient_text" />
+        android:layout_toEndOf="@+id/ingredient_text"
+        android:layout_marginRight="10dp" />
 
     <Button
         android:layout_width="wrap_content"

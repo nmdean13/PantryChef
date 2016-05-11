@@ -79,8 +79,8 @@ public class NewRecipeActivity extends AppCompatActivity {
         findRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RecipeAsyncTask task = new RecipeAsyncTask(getApplicationContext());
-                String url = task.generateIngredientQuery(nameArray);
+                RecipeAsyncTask task = new RecipeAsyncTask();
+                String url = task.generateIngredientQuery(checkedIngredients);
                 task.execute(url);
                 try {
                     task.get(5000, TimeUnit.MILLISECONDS);
@@ -115,6 +115,11 @@ public class NewRecipeActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.action_check) {
             check = true;
+            findRecipe.setEnabled(true);
+            findRecipe.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        } else {
+            findRecipe.setEnabled(false);
+            findRecipe.setBackgroundColor(getResources().getColor(R.color.inactiveButton));
         }
 
         for (CheckBox c : buttonArray) {
@@ -172,8 +177,6 @@ public class NewRecipeActivity extends AppCompatActivity {
     }
 
     // Creates a check box for the ingredient and adds it to buttonArray.
-    // TODO: Give check boxes a border so they can be seen against white background
-    // TODO: Make the check boxes bigger so that they're proportionate to the text size
     private void makeCheckBox(String ingredientString) {
         if (!ingredientString.isEmpty()) {
             if (nameArray.contains(ingredientString)) {

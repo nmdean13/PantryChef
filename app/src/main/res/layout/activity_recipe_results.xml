@@ -45,5 +45,6 @@
         android:background="@color/inactiveButton"
         android:enabled="false"
         android:textSize="20sp"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:layout_marginTop="10dp" />
 </RelativeLayout>

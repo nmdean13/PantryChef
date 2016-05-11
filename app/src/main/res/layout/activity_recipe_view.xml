@@ -111,13 +111,13 @@
                             android:id="@+id/save"
                             android:text="@string/save_recipe"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginLeft="275dp"
                             android:layout_alignParentBottom="true"
                             android:layout_centerHorizontal="true"
                             android:layout_marginBottom="10dp"
                             android:padding="10dp"
                             android:background="@color/colorPrimary"
-                            android:textColor="@color/actionBarText" />
+                            android:textColor="@color/actionBarText"
+                            android:textSize="20sp" />
 
                     </RelativeLayout>
 
@@ -137,7 +137,9 @@
                                 android:layout_height="wrap_content"
                                 android:text=""
                                 android:textSize="20sp"
-                                android:id="@+id/ingredients_text" />
+                                android:id="@+id/ingredients_text"
+                                android:padding="10dp"
+                                android:textColor="#000000" />
                         </ScrollView>
                     </LinearLayout>
                 </FrameLayout>

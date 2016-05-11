@@ -9,8 +9,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -46,7 +48,7 @@ public class ViewRecipeActivity extends TabActivity implements View.OnClickListe
         name = getIntent().getStringExtra("recipe_name");
         id = getIntent().getStringExtra("recipe_id");
 
-        task = new RecipeAsyncTask(getApplicationContext());
+        task = new RecipeAsyncTask();
         String url = task.generateRecipeQuery(id);
         task.execute(url);
         try {
@@ -90,13 +92,18 @@ public class ViewRecipeActivity extends TabActivity implements View.OnClickListe
         return true;
     }
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        return true;
+    }
+
     public void setUpDescriptionTab() {
         ImageView imageView = (ImageView) findViewById(R.id.image);
         String imgURL = task.getImageURL();
         new ImageDownloader((ImageView) findViewById(R.id.image))
                 .execute(imgURL);
 
-        //TODO: fetch description
         TextView description = (TextView) findViewById(R.id.desc_string);
 
         Button saveButton = (Button) findViewById(R.id.save);

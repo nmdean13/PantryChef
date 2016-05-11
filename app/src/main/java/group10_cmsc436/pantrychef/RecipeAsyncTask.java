@@ -31,9 +31,7 @@ class RecipeAsyncTask extends AsyncTask<String, Context, ArrayList<String>> {
     private JSONObject jsonObject;
 
 
-    public RecipeAsyncTask(Context c){
-
-    }
+    public RecipeAsyncTask(){ }
 
     protected ArrayList<String> doInBackground(String... params) {
         HttpURLConnection urlConnection;
@@ -53,25 +51,6 @@ class RecipeAsyncTask extends AsyncTask<String, Context, ArrayList<String>> {
         }
 
         return new ArrayList<String>();
-    }
-
-    protected void onPostExecute(ArrayList<String> result) {
-        if(result == null) {
-            //TODO: Display toast of no found recipes
-
-
-            Log.i("INFO", "No Recipe Found");
-        } else {
-            //TODO: Populate recipe view
-
-        }
-    }
-
-    private String getRecipeInfoFromURL(String query){
-
-        //TODO: Get the specific recipe information from the query
-
-        return null;
     }
 
     protected HashMap<String, String> getRecipesFromURL(String line){
@@ -199,17 +178,15 @@ class RecipeAsyncTask extends AsyncTask<String, Context, ArrayList<String>> {
     }
 
     protected String getRank() {
-        Double rank = 0.0;
+        String rank = new String();
         try {
             JSONObject recipeObj = jsonObject.getJSONObject("recipe");
-            rank = Double.parseDouble(recipeObj.getString("social_rank"));
+            rank = recipeObj.getString("social_rank");
         } catch (Exception e) {
             Log.e("ERROR", e.getMessage());
         }
 
-        NumberFormat formatter = new DecimalFormat("#0.00");
-
-        return String.valueOf(formatter.format(rank));
+        return rank;
     }
 
     protected String getRecipeURL() {
